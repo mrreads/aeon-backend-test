@@ -57,21 +57,7 @@ class Database
         setcookie("auth_count", $auth_count, time() + 3600, "/"); // 1 час
 
         if ($auth_count > 9) {
-            if (isset($_COOKIE['block_auth'])) {
-                $block_auth = $_COOKIE['block_auth'];
-                if ($block_auth < time()) {
-                    setcookie("block_auth", "", time() - 3600, "/");
-                    return false;
-                }
-                else {
-                    setcookie("block_auth", time() + 5, time() + 5, "/"); // 30 секунд
-                    return true;
-                }
-            }
-            else {
-                setcookie("block_auth", time() + 5, time() + 5, "/"); // 30 секунд
-                return true;
-            }
+            return true;
         }
         return false;
     }
@@ -85,7 +71,7 @@ class Database
         // Если сработала защита - не даст авторизоваться даже с верными данными
         if (self::check_bruteforce() == true)
         {
-            setcookie("auth_count", 99, time() + 5, "/"); // 30 секунд
+            setcookie("auth_count", 99, time() + 30, "/"); // 30 секунд
             return "bruteforce";
         }
 
