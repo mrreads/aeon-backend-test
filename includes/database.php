@@ -9,7 +9,7 @@ class Database
     {
         $this->connect();
     }
-
+    
     public static function connect()
     {
         $config = [
@@ -30,6 +30,7 @@ class Database
         }
     }
 
+    // Проверяем токен в куках на валидность
     public static function check_auth($tok) {
         $token = self::$database->quote($tok);
 
@@ -45,10 +46,50 @@ class Database
             return false;
         }
     }
+
+    // При поптыке захода записываем количество авторизаций в куки.
+    // Если попыток более 9 = запрещаем логиниться на 30 секунд. И отчёт запускается по новой.
+    public static function check_bruteforce() {
+        $auth_count = 1;
+        if (isset($_COOKIE['auth_count'])) {
+            $auth_count = $_COOKIE['auth_count'] + 1;
+        }
+        setcookie("auth_count", $auth_count, time() + 3600, "/"); // 1 час
+
+        if ($auth_count > 9) {
+            if (isset($_COOKIE['block_auth'])) {
+                $block_auth = $_COOKIE['block_auth'];
+                if ($block_auth < time()) {
+                    setcookie("block_auth", "", time() - 3600, "/");
+                    return false;
+                }
+                else {
+                    setcookie("block_auth", time() + 5, time() + 5, "/"); // 30 секунд
+                    return true;
+                }
+            }
+            else {
+                setcookie("block_auth", time() + 5, time() + 5, "/"); // 30 секунд
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Авторизация, устанавливает токен в куки
     public static function auth_user($log, $pas) {
         $login = self::$database->quote($log);
         $password = self::$database->quote($pas);
 
+        // Смотрим на условие, больше 9 попыток или нет
+        // Если сработала защита - не даст авторизоваться даже с верными данными
+        if (self::check_bruteforce() == true)
+        {
+            setcookie("auth_count", 99, time() + 5, "/"); // 30 секунд
+            return "bruteforce";
+        }
+
+        // Извлекаем хеш пароля, чтобы потом сравнить его с оригинальным
         $query = "SELECT id_user, user_password FROM `users` WHERE user_login = $login;";
         
         $sth = self::$database->prepare($query);
@@ -69,7 +110,8 @@ class Database
             $query = "INSERT INTO `tokens` (`token_value`, `token_user`) VALUES ('$token', '$user_id');";
             $sucess = self::$database->prepare($query)->execute();
             if ($sucess) {
-                setcookie("token", $token, time() + 3600, "/");
+                // Храним токен для проверки авторизации
+                setcookie("token", $token, time() + (60 * 60 * 24 * 3), "/"); // 3 дня
                 return true;
             }
         }

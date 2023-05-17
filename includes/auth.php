@@ -9,7 +9,7 @@ $password = htmlentities($_POST['password']);
 
 if (isset($login) && isset($password)) {
     $is_success = $db->auth_user($login, $password);
-    
+
     $json = array("success" =>  $is_success);
     echo json_encode($json);
     return $is_success;
