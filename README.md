@@ -38,10 +38,10 @@
 
 ### Структура базы данных
 
-![Структура базы данных](https://i.ibb.co/BPtnRqs/database.jpg)
+![Структура базы данных](https://i.ibb.co/NnfFwyr/database.jpg)
 
 
 ### Скриншоты
 
-![Авторизация](https://i.ibb.co/7jKnq2w/1.jpg)
-![Данные](https://i.ibb.co/470zmdk/2.jpg)
+![Авторизация](https://i.ibb.co/Y2j91kt/1.jpg)
+![Данные](https://i.ibb.co/C923JPH/2.jpg)

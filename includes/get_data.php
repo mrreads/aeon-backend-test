@@ -9,7 +9,7 @@ if ($id) {
     $login = $db->get_user($id);
 
     if ($login) {
-        $json = array("success" =>  true, "login" => $login);
+        $json = array("success" =>  true, "data" => $login);
         echo json_encode($json);
         return true;
     }

@@ -15,7 +15,14 @@ async function loading_data() {
     const json = await response.json();
     if (json.success) {
         const login = document.querySelector('.login');
-        login.textContent = json.login;
+        const name = document.querySelector('.name');
+        const date = document.querySelector('.date');
+        const avatar = document.querySelector('.avatar');
+
+        login.textContent = json.data.user_login;
+        name.textContent = json.data.user_name;
+        date.textContent = json.data.user_date;
+        avatar.src = json.data.user_image;
 
         // Тут можно вставить код который берёт данные из API Instagram.
     }

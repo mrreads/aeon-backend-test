@@ -36,10 +36,10 @@ class Database
         $query = "SELECT token_user FROM `tokens` WHERE token_value = $token;";
         $sth = self::$database->prepare($query);
         $sth->execute();
-        $token_user = $sth->fetch(\PDO::FETCH_ASSOC)['token_user'];
+        $token_user = $sth->fetch(\PDO::FETCH_ASSOC);
 
         if ($token_user) {
-            return $token_user;
+            return $token_user['token_user'];
         }
         else {
             return false;
@@ -79,13 +79,13 @@ class Database
     public static function get_user($id) {
         $id = self::$database->quote($id);
 
-        $query = "SELECT user_login FROM `users` WHERE id_user = $id;";
+        $query = "SELECT user_login, user_name, user_image, user_date FROM `users` WHERE id_user = $id;";
         $sth = self::$database->prepare($query);
         $sth->execute();
-        $login = $sth->fetch(\PDO::FETCH_ASSOC)['user_login'];
+        $user = $sth->fetch(\PDO::FETCH_ASSOC);
 
-        if ($login) {
-            return $login;
+        if ($user['user_login']) {
+            return $user;
         }
         return false;
     }
@@ -103,7 +103,7 @@ class Database
         $user_count = $sth->rowCount();
         
         if ($user_count == 0) {
-            $query = "INSERT INTO `users` (`id_user`, `user_login`, `user_password`) VALUES (NULL, $login, '$hash_password');";
+            $query = "INSERT INTO `users` (`id_user`, `user_login`, `user_password`, `user_name`, `user_image`, `user_date`) VALUES (NULL, $login, '$hash_password', 'Иван Иванов', '/uploads/default-avatar.png', CURRENT_DATE());";
             self::$database->prepare($query)->execute();
             return true;
         }

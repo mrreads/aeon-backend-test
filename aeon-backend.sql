@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 17, 2023 at 07:22 PM
+-- Generation Time: May 17, 2023 at 08:22 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.9
 
@@ -37,23 +37,9 @@ CREATE TABLE `tokens` (
 --
 
 INSERT INTO `tokens` (`token_value`, `token_user`) VALUES
-('27c303531d71e342506482e8599baabe', 5),
-('a83b154d10de299aba54d25a81c83a8d', 5),
-('bf723aac22f690df476b9678555c95e4', 5),
-('cb8a37e1d2ccfbe00f2b01dbb65d67c3', 5),
-('5c91f572249af7e37ff0235fb94c63c2', 9),
-('5c3801f28db5ff981e317cf5ab08769c', 5),
-('605ff8f0a2bc9c924fdb06aa5e2bca7b', 5),
-('c39086c595257f7cf1eff82d2ca61a02', 5),
-('e8905600c975c89a2c8f6e9aab29f207', 5),
-('dba44882fed7d8beb166e52403e8a417', 5),
-('0c167f571124a1aae42a30b398e9f2ec', 5),
-('14ad46a7c7c4683935a1c18a72db182e', 5),
-('2929d617c7c1f1b49765a2f2c82813c6', 5),
-('cdb85c8ca0a3f7fa7f74165cff5e355a', 5),
-('9e33bb31fe860a8d5207d4e782766928', 10),
-('3a2ba390dccda9af9fd20736809f120a', 10),
-('e7108002023589e99eb5b53df8682cc4', 5);
+('3e48117318af186ead58d02941de8b5a', 14),
+('f02c8fca7596de8c700c1c16f4f5a21a', 14),
+('37c016369aaf21f7f98ff09e4a19a736', 14);
 
 -- --------------------------------------------------------
 
@@ -64,17 +50,20 @@ INSERT INTO `tokens` (`token_value`, `token_user`) VALUES
 CREATE TABLE `users` (
   `id_user` int NOT NULL,
   `user_login` varchar(255) NOT NULL,
-  `user_password` varchar(255) NOT NULL
+  `user_password` varchar(255) NOT NULL,
+  `user_name` varchar(255) NOT NULL,
+  `user_image` varchar(255) NOT NULL,
+  `user_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id_user`, `user_login`, `user_password`) VALUES
-(5, 'user1', '$2y$10$bpks/0QhhFzqhAAUXhPJM.wKotXe4TLODdG1.WMSQlKHvhO4MNLrC'),
-(9, 'mrreads', '$2y$10$MBg4AUZSaaKpOoA1Nm9bXewnr8gFvKPseoMRp/YSunyv1Y2wxK.S.'),
-(10, '123', '$2y$10$WfgmeOCd7pExpiRBTHfIKuSItY91egjm.hRMWIm9Yp8/CF9MVWFVi');
+INSERT INTO `users` (`id_user`, `user_login`, `user_password`, `user_name`, `user_image`, `user_date`) VALUES
+(12, 'mrreads', '$2y$10$fZzEYTj4Gz6KEf4XzER68OiME6kEHfKpnscxymvacLsXwp1H96.Iq', 'Иван Иванов', '/uploads/default-avatar.png', '2023-05-17'),
+(13, 'user', '$2y$10$4PwQMZwf1tdkJZmFS1Py9uOOnLxEt9ZL3rUfdCcOYhEWb/m2113hG', 'Иван Иванов', '/uploads/default-avatar.png', '2023-05-17'),
+(14, 'user1', '$2y$10$uQfEYtHfo/85EYzvR3CSouHCYDJw.zCSzAZLlD4v8scAsonrir4rq', 'Иван Иванов', '/uploads/default-avatar.png', '2023-05-17');
 
 --
 -- Indexes for dumped tables
@@ -100,7 +89,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables
