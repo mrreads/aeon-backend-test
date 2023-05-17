@@ -12,7 +12,12 @@ class Database
 
     public static function connect()
     {
-        $config = require_once __DIR__ . './../config/database.php';
+        $config = [
+            'host' => '127.0.0.1',
+            'dbname' => 'aeon-backend',
+            'user' => 'root',
+            'password' => ''
+        ];
         $connection = 'mysql:dbname=' . $config['dbname'] . ';host=' . $config['host'];
         try
         {
@@ -25,6 +30,22 @@ class Database
         }
     }
 
+    public static function check_auth($tok) {
+        $token = self::$database->quote($tok);
+
+        $query = "SELECT token_user FROM `tokens` WHERE token_value = $token;";
+
+        $sth = self::$database->prepare($query);
+        $sth->execute();
+        $user_data = $sth->fetch(\PDO::FETCH_ASSOC);
+        
+        if ($user_data) {
+            return $user_data['token_user'];
+        }
+        else {
+            return false;
+        }
+    }
     public static function auth_user($log, $pas) {
         $login = self::$database->quote($log);
         $password = self::$database->quote($pas);
@@ -35,7 +56,13 @@ class Database
         $sth->execute();
         $user_data = $sth->fetch(\PDO::FETCH_ASSOC);
 
-        $password_compare = password_verify($password, $user_data['user_password']);
+        if ($user_data) {
+            $password_compare = password_verify($password, $user_data['user_password']);
+        }
+        else {
+            return false;
+        }
+
         if ($password_compare) {
             $user_id = $user_data['id_user'];
             $token = bin2hex(random_bytes(16));
@@ -43,9 +70,24 @@ class Database
             $query = "INSERT INTO `tokens` (`token_value`, `token_user`) VALUES ('$token', '$user_id');";
             $sucess = self::$database->prepare($query)->execute();
             if ($sucess) {
-                setcookie("token", $token);
+                setcookie("token", $token, time() + 3600, "/");
                 return true;
             }
+        }
+        return false;
+    }
+
+    public static function get_user($id) {
+        $id = self::$database->quote($id);
+
+        $query = "SELECT user_login FROM `users` WHERE id_user = $id;";
+        
+        $sth = self::$database->prepare($query);
+        $sth->execute();
+        $login = $sth->fetch(\PDO::FETCH_ASSOC)['user_login'];
+
+        if ($login) {
+            return $login;
         }
         return false;
     }
