@@ -27,7 +27,9 @@ body {
 
 .auth form {
     margin-top: 100px;
+    margin-bottom: 25px;
 }
+
 .info form {
     margin-top: 15px;
 }
@@ -36,6 +38,7 @@ body {
 }
 
 fieldset {
+    padding: 0 10px;
     border: 5px solid #0962E8;
     border-radius: 16px;
     width: auto;
@@ -53,6 +56,7 @@ fieldset legend {
     font-size: 38px;
     line-height: 130%;
     margin-bottom: 35px;
+    transition: .3s all;
 }
 
 fieldset legend span {
@@ -69,7 +73,7 @@ input {
     font-size: 21px;
     padding: 10px 10px;
     text-align: center;
-    transform: .3s all;
+    transition: .3s all;
 }
 
 input[type=text], input[type=password] {
@@ -114,6 +118,10 @@ input[type=text]:hover, input[type=password]:hover, input[type=text]:focus, inpu
     margin: 0 auto;
 }
 
+.error_handler {
+    text-align: center;
+}
+
 .alert {
     position: fixed;
     right: 15px;
@@ -135,6 +143,12 @@ body[data-auth=true] .auth, body[data-auth=false] .info  {
 
 body[data-auth=false] .auth, body[data-auth=true] .info  {
     display: block;
+}
+
+.info-wrapper {
+    font-size: 21px;
+    margin-top: 15px;
+    gap: 10px;
 }
 
 @media screen and (max-width: 1100px) {
@@ -162,8 +176,17 @@ body[data-auth=false] .auth, body[data-auth=true] .info  {
 }
 
 @media screen and (max-width: 425px) {
+    fieldset legend {
+        font-size: 32px;
+    }
     .container {
         padding: 0 25px;
+    }
+    input[type=text], input[type=password] {
+        width: 100%;
+    }
+    .button {
+        justify-content: center;
     }
 }
 

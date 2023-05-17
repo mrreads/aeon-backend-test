@@ -32,8 +32,7 @@ auth_form.addEventListener('submit', async (e) => {
             setTimeout(() => {
                 if (alert)
                     alert.remove();
-            }, 10_000)
-
+            }, 10_000);
         }
         else {
             error_handler.textContent = "Ошибка! Неверно введены данные."
@@ -41,6 +40,14 @@ auth_form.addEventListener('submit', async (e) => {
     }
 
     if (type == 'register') {
-
+        const response = await fetch("./../includes/register.php", headers);
+        const json = await response.json();
+        
+        if (json.success) {
+            error_handler.textContent = "Вы зарегистрировались."
+        }
+        else {
+            error_handler.textContent = "Ошибка регистрации."
+        }
     }
-})
+});

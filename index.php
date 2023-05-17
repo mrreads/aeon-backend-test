@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Авторизация</title>
     <link rel="stylesheet" href="./styles/general.css">
+    <script src="./scripts/data.js" defer></script>
     <script src="./scripts/auth.js" defer></script>
 </head>
 <body data-auth="<?=($auth) ? 'true' : 'false' ?>">
